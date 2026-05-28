@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>International Client Acquisition System</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #F97316;
+    --orange-light: #FED7AA;
+    --orange-pale: #FFF7ED;
+    --orange-mid: #FB923C;
+    --orange-glow: rgba(249,115,22,0.15);
+    --grey-950: #0A0A0B;
+    --grey-900: #111113;
+    --grey-800: #1C1C1F;
+    --grey-700: #28282D;
+    --grey-600: #3A3A40;
+    --grey-500: #52525B;
+    --grey-400: #71717A;
+    --grey-300: #A1A1AA;
+    --grey-200: #D4D4D8;
+    --grey-100: #F4F4F5;
+    --white: #FFFFFF;
+    --font: 'Poppins', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font);
+    background: var(--grey-950);
+    color: var(--grey-100);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ─── NOISE TEXTURE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 80px 24px;
+    overflow: hidden;
+  }
+
+  .hero-bg-orb {
+    position: absolute;
+    width: 700px; height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(249,115,22,0.18) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    animation: pulse 6s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+  }
+
+  .hero-tag {
+    display: inline-block;
+    background: var(--orange-glow);
+    border: 1px solid rgba(249,115,22,0.4);
+    color: var(--orange-mid);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 100px;
+    margin-bottom: 32px;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.4rem, 6vw, 5rem);
+    font-weight: 900;
+    line-height: 1.08;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.8s 0.1s ease both;
+    max-width: 900px;
+  }
+
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--orange) 0%, #FDBA74 60%, var(--orange-mid) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: var(--grey-300);
+    max-width: 620px;
+    margin: 24px auto 0;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 48px;
+    margin-top: 56px;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--orange);
+    display: block;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.72rem;
+    color: var(--grey-400);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 6px;
+    font-weight: 500;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── SECTION WRAPPER ─── */
+  .section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 80px 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-header {
+    margin-bottom: 56px;
+  }
+
+  .section-tag {
+    display: inline-block;
+    background: var(--orange-glow);
+    border: 1px solid rgba(249,115,22,0.3);
+    color: var(--orange-mid);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 100px;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 800;
+    line-height: 1.15;
+    color: var(--white);
+  }
+
+  .section-title span { color: var(--orange); }
+
+  .section-desc {
+    font-size: 0.95rem;
+    color: var(--grey-400);
+    margin-top: 12px;
+    max-width: 560px;
+    font-weight: 400;
+  }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--grey-700), transparent);
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ─── PLAN A — MANUAL ─── */
+  .steps-grid {
+    display: grid;
+    gap: 24px;
+  }
+
+  .step-card {
+    background: var(--grey-800);
+    border: 1px solid var(--grey-700);
+    border-radius: 16px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .step-card:hover {
+    border-color: rgba(249,115,22,0.5);
+    transform: translateY(-3px);
+  }
+
+  .step-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: linear-gradient(180deg, var(--orange) 0%, transparent 100%);
+    border-radius: 4px 0 0 4px;
+  }
+
+  .step-card::after {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(249,115,22,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .step-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+
+  .step-num {
+    flex-shrink: 0;
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--orange) 0%, #EA580C 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--white);
+    box-shadow: 0 4px 20px rgba(249,115,22,0.35);
+  }
+
+  .step-meta h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.3;
+  }
+
+  .step-meta .step-subtitle {
+    font-size: 0.78rem;
+    color: var(--orange-mid);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    margin-top: 3px;
+  }
+
+  .step-body p {
+    font-size: 0.88rem;
+    color: var(--grey-300);
+    margin-bottom: 20px;
+    line-height: 1.75;
+  }
+
+  .tools-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--grey-400);
+    margin-bottom: 10px;
+  }
+
+  .tools-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tool-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--grey-700);
+    border: 1px solid var(--grey-600);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--grey-200);
+    transition: all 0.2s;
+  }
+
+  .tool-badge:hover {
+    border-color: var(--orange);
+    color: var(--orange-light);
+    background: var(--grey-800);
+  }
+
+  .tool-badge .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--orange);
+    flex-shrink: 0;
+  }
+
+  .tool-badge.free .dot { background: #22C55E; }
+  .tool-badge.free { border-color: rgba(34,197,94,0.2); }
+  .tool-badge.free:hover { border-color: #22C55E; color: #86EFAC; }
+
+  .free-note {
+    font-size: 0.72rem;
+    color: #4ADE80;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .free-note::before {
+    content: '✓';
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: rgba(34,197,94,0.15);
+    border: 1px solid rgba(34,197,94,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    flex-shrink: 0;
+  }
+
+  .action-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .action-list li {
+    font-size: 0.86rem;
+    color: var(--grey-300);
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.6;
+  }
+
+  .action-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--orange);
+    font-weight: 700;
+  }
+
+  /* ─── PLAN B — AUTOMATED ─── */
+  .auto-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  @media (max-width: 720px) {
+    .auto-grid { grid-template-columns: 1fr; }
+  }
+
+  .auto-card {
+    background: linear-gradient(135deg, var(--grey-800) 0%, rgba(30,30,33,0.8) 100%);
+    border: 1px solid var(--grey-700);
+    border-radius: 16px;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .auto-card:hover {
+    border-color: rgba(249,115,22,0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(249,115,22,0.1);
+  }
+
+  .auto-card.featured {
+    grid-column: span 2;
+    background: linear-gradient(135deg, rgba(249,115,22,0.1) 0%, var(--grey-800) 60%);
+    border-color: rgba(249,115,22,0.3);
+  }
+
+  @media (max-width: 720px) {
+    .auto-card.featured { grid-column: span 1; }
+  }
+
+  .auto-card-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: var(--orange-glow);
+    border: 1px solid rgba(249,115,22,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+  }
+
+  .auto-card h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .auto-card p {
+    font-size: 0.83rem;
+    color: var(--grey-400);
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  .stack-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .stack-pill {
+    background: rgba(249,115,22,0.1);
+    border: 1px solid rgba(249,115,22,0.2);
+    color: var(--orange-light);
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+
+  .stack-pill.neutral {
+    background: var(--grey-700);
+    border-color: var(--grey-600);
+    color: var(--grey-300);
+  }
+
+  /* ─── FLOW DIAGRAM ─── */
+  .flow-section {
+    background: var(--grey-800);
+    border: 1px solid var(--grey-700);
+    border-radius: 20px;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 40px;
+  }
+
+  .flow-section h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .flow-section h3::before {
+    content: '';
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--orange);
+    box-shadow: 0 0 10px var(--orange);
+  }
+
+  .flow-steps {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .flow-node {
+    background: var(--grey-900);
+    border: 1px solid var(--grey-600);
+    border-radius: 10px;
+    padding: 12px 18px;
+    text-align: center;
+    min-width: 120px;
+    transition: all 0.3s;
+  }
+
+  .flow-node:hover {
+    border-color: var(--orange);
+    background: var(--orange-glow);
+  }
+
+  .flow-node .fn-num {
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: var(--orange);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .flow-node .fn-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--grey-200);
+    margin-top: 3px;
+  }
+
+  .flow-arrow {
+    color: var(--orange);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    padding: 0 8px;
+  }
+
+  /* ─── COMPARISON TABLE ─── */
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 16px;
+    overflow: hidden;
+    font-size: 0.85rem;
+  }
+
+  .comparison-table th {
+    background: var(--grey-700);
+    padding: 14px 20px;
+    text-align: left;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--grey-300);
+  }
+
+  .comparison-table th:first-child { color: var(--orange); }
+
+  .comparison-table td {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--grey-700);
+    color: var(--grey-300);
+    background: var(--grey-800);
+    vertical-align: top;
+  }
+
+  .comparison-table tr:last-child td { border-bottom: none; }
+
+  .comparison-table td:first-child {
+    font-weight: 600;
+    color: var(--white);
+    white-space: nowrap;
+  }
+
+  .badge-manual {
+    display: inline-block;
+    background: rgba(250,204,21,0.1);
+    border: 1px solid rgba(250,204,21,0.3);
+    color: #FDE047;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 5px;
+  }
+
+  .badge-auto {
+    display: inline-block;
+    background: rgba(34,197,94,0.1);
+    border: 1px solid rgba(34,197,94,0.3);
+    color: #4ADE80;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 5px;
+  }
+
+  /* ─── RESULTS BANNER ─── */
+  .results-banner {
+    background: linear-gradient(135deg, rgba(249,115,22,0.15) 0%, rgba(234,88,12,0.08) 100%);
+    border: 1px solid rgba(249,115,22,0.3);
+    border-radius: 20px;
+    padding: 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin-top: 16px;
+  }
+
+  .results-banner::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: 50%;
+    transform: translateX(-50%);
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(249,115,22,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .results-banner h2 {
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 800;
+    color: var(--white);
+    position: relative;
+    z-index: 1;
+  }
+
+  .results-banner h2 span { color: var(--orange); }
+
+  .results-banner p {
+    font-size: 0.9rem;
+    color: var(--grey-300);
+    margin-top: 16px;
+    position: relative;
+    z-index: 1;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .results-stats {
+    display: flex;
+    justify-content: center;
+    gap: 56px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+
+  .r-stat .r-num {
+    font-size: 2.4rem;
+    font-weight: 900;
+    color: var(--orange);
+    display: block;
+    line-height: 1;
+  }
+
+  .r-stat .r-label {
+    font-size: 0.72rem;
+    color: var(--grey-400);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 8px;
+    font-weight: 500;
+  }
+
+  /* ─── LEARNING SECTION ─── */
+  .learn-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  @media (max-width: 720px) {
+    .learn-grid { grid-template-columns: 1fr; }
+  }
+
+  .learn-card {
+    background: var(--grey-800);
+    border: 1px solid var(--grey-700);
+    border-radius: 14px;
+    padding: 24px;
+    transition: all 0.3s;
+  }
+
+  .learn-card:hover {
+    border-color: rgba(249,115,22,0.4);
+    transform: translateY(-4px);
+  }
+
+  .learn-icon {
+    font-size: 1.8rem;
+    margin-bottom: 14px;
+  }
+
+  .learn-card h4 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .learn-card p {
+    font-size: 0.8rem;
+    color: var(--grey-400);
+    line-height: 1.65;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--grey-900);
+    border-top: 1px solid var(--grey-800);
+    padding: 40px 24px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  footer p {
+    font-size: 0.78rem;
+    color: var(--grey-500);
+  }
+
+  footer span { color: var(--orange); }
+
+  /* ─── PLAN TABS ─── */
+  .tab-switcher {
+    display: flex;
+    gap: 4px;
+    background: var(--grey-800);
+    border: 1px solid var(--grey-700);
+    border-radius: 12px;
+    padding: 4px;
+    width: fit-content;
+    margin-bottom: 48px;
+  }
+
+  .tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--grey-400);
+    font-family: var(--font);
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 10px 24px;
+    border-radius: 9px;
+    cursor: pointer;
+    transition: all 0.25s;
+    letter-spacing: 0.02em;
+  }
+
+  .tab-btn.active {
+    background: linear-gradient(135deg, var(--orange) 0%, #EA580C 100%);
+    color: var(--white);
+    box-shadow: 0 4px 16px rgba(249,115,22,0.35);
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ─── STICKY PROGRESS ─── */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--orange), #FDBA74);
+    z-index: 9999;
+    transition: width 0.1s linear;
+    width: 0%;
+  }
+
+  /* ─── SCROLL REVEAL ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- ═══════════════════════════════════════
+     HERO
+═══════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-bg-orb"></div>
+  <div class="hero-tag">International Growth System · 6-Step Blueprint</div>
+  <h1>Land <span>100+ International</span> Sales Calls Every Month</h1>
+  <p class="hero-sub">A complete dual-path blueprint — manual AI-assisted workflow &amp; fully automated system — to find, filter, and close international clients at scale with zero content marketing.</p>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-num">2L+</span>
+      <div class="stat-label">Raw Leads Pulled</div>
+    </div>
+    <div class="stat">
+      <span class="stat-num">40K</span>
+      <div class="stat-label">Qualified After AI Filter</div>
+    </div>
+    <div class="stat">
+      <span class="stat-num">4 min</span>
+      <div class="stat-label">6 Campaigns Created</div>
+    </div>
+    <div class="stat">
+      <span class="stat-num">100+</span>
+      <div class="stat-label">Sales Calls / Month</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════
+     FLOW OVERVIEW
+═══════════════════════════════════════ -->
+<div class="section reveal">
+  <div class="flow-section">
+    <h3>System Overview — 6-Step Pipeline</h3>
+    <div class="flow-steps">
+      <div class="flow-node">
+        <div class="fn-num">Step 1</div>
+        <div class="fn-label">Lead List</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <div class="fn-num">Step 2</div>
+        <div class="fn-label">AI Filter</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <div class="fn-num">Step 3</div>
+        <div class="fn-label">Write Campaign</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <div class="fn-num">Step 4</div>
+        <div class="fn-label">Human Review</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <div class="fn-num">Step 5</div>
+        <div class="fn-label">Auto-Launch</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <div class="fn-num">Step 6</div>
+        <div class="fn-label">Nightly Audit</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     DUAL PLANS — TABBED
+═══════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header reveal">
+    <div class="section-tag">Your Execution Plans</div>
+    <h2 class="section-title">Two Paths to the <span>Same Result</span></h2>
+    <p class="section-desc">Plan A is how you run the system manually with free AI tools today. Plan B is the same system fully automated — also with free tools where possible.</p>
+  </div>
+
+  <div class="tab-switcher reveal">
+    <button class="tab-btn active" onclick="switchTab('manual')">Plan A — Manual AI-Assisted</button>
+    <button class="tab-btn" onclick="switchTab('auto')">Plan B — Fully Automated</button>
+  </div>
+
+  <!-- ─── PLAN A: MANUAL ─── -->
+  <div class="tab-panel active" id="panel-manual">
+
+    <div class="steps-grid">
+
+      <!-- STEP 1 -->
+      <div class="step-card reveal">
+        <div class="step-header">
+          <div class="step-num">01</div>
+          <div class="step-meta">
+            <h3>Building the Lead List</h3>
+            <div class="step-subtitle">Input Layer — Raw Volume</div>
+          </div>
+        </div>
+        <div class="step-body">
+          <p>Your goal is to pull a massive, unfiltered list of international companies — up to 2,00,000 rows. The bigger and dirtier the list, the better, because AI filters it in Step 2. Don't over-curate here; just export in bulk.</p>
+          <ul class="action-list">
+            <li>Go to Apollo.io (free tier: 50 exports/month) and use filters like country, employee count, industry, tech stack. Export CSVs manually in batches.</li>
+            <li>Use Hunter.io free plan to find verified email addresses for each company domain.</li>
+            <li>Use LinkedIn Sales Navigator free trial or LinkedIn search with Boolean operators to find decision-makers. Save profiles manually.</li>
+            <li>Use Phantombuster free tier (10 min/day) to scrape LinkedIn search results into a spreadsheet automatically.</li>
+            <li>Combine all CSVs into one master Google Sheet. Deduplicate using a free formula or the "Remove Duplicates" add-on.</li>
+          </ul>
+          <div class="tools-label">Free Tools for This Step</div>
+          <div class="tools-row">
+            <span class="tool-badge free"><span class="dot"></span>Apollo.io (Free)</span>
+            <span class="tool-badge free"><span class="dot"></span>Hunter.io (Free)</span>
+            <span class="tool-badge free"><span class="dot"></span>Phantombuster (Free Tier)</span>
+            <span class="tool-badge free"><span class="dot"></span>Google Sheets</span>
+            <span class="tool-badge free"><span class="dot"></span>LinkedIn Search</span>
+          </div>
+          <div class="free-note">All tools above have usable free tiers. No credit card required for initial scraping.</div>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step-card reveal">
+        <div class="step-header">
+          <div class="step-num">02</div>
+          <div class="step-meta">
+            <h3>Filtering with AI</h3>
+            <div class="step-subtitle">ICP Qualification — 2L → 40K</div>
+          </div>
+        </div>
+        <div class="step-body">
+          <p>Before enriching or emailing anyone, you need to verify each company actually fits your Ideal Customer Profile (ICP). Manually paste batches of lead data into Claude and prompt it to score and filter. This saves you from wasting time enriching bad leads.</p>
+          <ul class="action-list">
+            <li>Open Claude.ai (free) and write a system prompt defining your ICP: industry, company size, region, revenue, job titles, and pain points.</li>
+            <li>Paste 50–100 rows at a time from your Google Sheet and ask Claude to return only the rows that match your ICP with a fit score (1–10).</li>
+            <li>Ask Claude to also flag the reason for fit or disqualification in a "Notes" column — this helps you learn and refine the ICP over time.</li>
+            <li>Keep only leads scored 7+ from Claude's output. Paste them into a new "Qualified Leads" sheet.</li>
+            <li>Repeat in batches until your 2L raw list is reduced to roughly 40K qualified prospects.</li>
+          </ul>
+          <div class="tools-label">Free Tools for This Step</div>
+          <div class="tools-row">
+            <span class="tool-badge free"><span class="dot"></span>Claude.ai (Free)</span>
+            <span class="tool-badge free"><span class="dot"></span>ChatGPT (Free)</span>
+            <span class="tool-badge free"><span class="dot"></span>Google Sheets</span>
+            <span class="tool-badge free"><span class="dot"></span>Gemini (Free)</span>
+          </div>
+          <div class="free-note">Copy-paste workflow — no API costs. Batch 50–100 rows at a time for best results.</div>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step-card reveal">
+        <div class="step-header">
+          <div class="step-num">03</div>
+          <div class="step-meta">
+            <h3>Let AI Write the Campaign</h3>
+            <div class="step-subtitle">Email Copywriting + Self-Grading</div>
+          </div>
+        </div>
+        <div class="step-body">
+          <p>Use Claude or ChatGPT to generate a full 3-email cold outreach sequence: Email 1 (cold intro), Follow-Up 1 (value add), Follow-Up 2 (soft close). Also generate spintax variations for each subject line and opening line to improve deliverability.</p>
+          <ul class="action-list">
+            <li>Write a prompt for Claude: "Write a 3-email cold outreach sequence for [your service] targeting [ICP segment]. Include spintax variations using curly braces for subject lines. Keep Email 1 under 80 words."</li>
+            <li>Ask Claude to self-grade the copy: "Now score this sequence on: personalization (1–10), clarity of value prop (1–10), and call-to-action strength (1–10). If any score is below 7, rewrite that section."</li>
+            <li>Once graded 7+, copy the sequences into a Google Doc or Notion page labelled by campaign segment.</li>
+            <li>Generate at least 3 angle variations per campaign — different hooks, different pain points — so you can A/B test across SmartLead.</li>
+            <li>Use MailMeteor or Woodpecker free tiers to test subject line open rates before full launch.</li>
+          </ul>
+          <div class="tools-label">Free Tools for This Step</div>
+          <div class="tools-row">
+            <span class="tool-badge free"><span class="dot"></span>Claude.ai (Free)</span>
+            <span class="tool-badge free"><span class="dot"></span>ChatGPT Free</span>
+            <span class="tool-badge free"><span class="dot"></span>Google Docs</span>
+            <span class="tool-badge free"><span class="dot"></span>Notion (Free)</span>
+            <span class="tool-badge free"><span class="dot"></span>MailMeteor (Free)</span>
+          </div>
+          <div class="free-note">Self-grading loop is key — don't skip it. Claude rewrites until the copy scores 7+/10 on your rubric.</div>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step-card reveal">
+        <div class="step-header">
+          <div class="step-num">04</div>
+          <div class="step-meta">
+            <h3>Human Review Checkpoint</h3>
+            <div class="step-subtitle">The Only Manual Gate in the System</div>
+          </div>
+        </div>
+        <div class="step-body">
+          <p>Before any campaign goes live, you personally review the copy, the angle, and the segment. This is where your judgment protects sender reputation and keeps messaging on-brand. In the manual version, you review in Google Docs or Notion directly.</p>
+          <ul class="action-list">
+            <li>Create a "Campaigns to Review" folder in Google Drive or Notion. AI-written campaigns land here after Step 3.</li>
+            <li>Review three things: (1) Is the angle right for this segment? (2) Is the first line compelling? (3) Does the CTA make a small ask?</li>
+            <li>Leave a comment: "APPROVED — launch as-is" or "CHANGE: [your note]". If change, paste the note back to Claude and have it rewrite.</li>
+            <li>Once approved, move the campaign doc to "Ready to Launch" folder and proceed to Step 5.</li>
+          </ul>
+          <div class="tools-label">Free Tools for This Step</div>
+          <div class="tools-row">
+            <span class="tool-badge free"><span class="dot"></span>Google Drive</span>
+            <span class="tool-badge free"><span class="dot"></span>Notion (Free)</span>
+            <span class="tool-badge free"><span class="dot"></span>Claude.ai (Rewrite)</span>
+          </div>
+          <div class="free-note">This is intentionally manual — your judgment here directly protects sender reputation and deal quality.</div>
+        </div>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="step-card reveal">
+        <div class="step-header">
+          <div class="step-num">05</div>
+          <div class="step-meta">
+            <h3>Launch in SmartLead / Instantly</h3>
+            <div class="step-subtitle">Manual Campaign Setup in Sending Platform</div>
+          </div>
+        </div>
+        <div class="step-body">
+          <p>Once you have approved campaign copy and a verified lead list, you manually set up the campaign inside SmartLead or Instantly (both have free trials). Upload 5,000 leads, configure follow-up timing, and hit start.</p>
+          <ul class="action-list">
+            <li>Use SmartLead.ai free trial or Instantly.ai free trial (both offer 14-day free). Create one campaign per segment.</li>
+            <li>Upload your 5,000 leads as a CSV. Map the fields: first name, company, email, any personalization variables you used in copy.</li>
+            <li>Configure sending schedule: 9am–5pm local time for the prospect's timezone. Limit 40 emails/day per inbox to stay safe.</li>
+            <li>Set follow-up delays: Email 1 → Day 1, Follow-Up 1 → Day 3, Follow-Up 2 → Day 7. Enable auto-stop on reply.</li>
+            <li>For email warm-up (critical for deliverability), use Mailwarm or SmartLead's built-in warm-up — both have free tiers.</li>
+          </ul>
+          <div class="tools-label">Free Tools for This Step</div>
+          <div class="tools-row">
+            <span class="tool-badge free"><span class="dot"></span>SmartLead (Free Trial)</span>
+            <span class="tool-badge free"><span class="dot"></span>Instantly.ai (Free Trial)</span>
+            <span class="tool-badge free"><span class="dot"></span>Mailwarm (Free)</span>
+            <span class="tool-badge free"><span class="dot"></span>Lemlist (Free Trial)</span>
+          </div>
+          <div class="free-note">Run warm-up for 2 weeks on every inbox before sending cold emails. This is non-negotiable for deliverability.</div>
+        </div>
+      </div>
+
+      <!-- STEP 6 -->
+      <div class="step-card reveal">
+        <div class="step-header">
+          <div class="step-num">06</div>
+          <div class="step-meta">
+            <h3>Nightly Campaign Audit</h3>
+            <div class="step-subtitle">Kill Bad Campaigns, Feed Winners</div>
+          </div>
+        </div>
+        <div class="step-body">
+          <p>Every evening, you manually check every active campaign in SmartLead and make a decision based on four kill criteria. Bad campaigns stop early to protect sender reputation. Good campaigns get more leads uploaded.</p>
+          <ul class="action-list">
+            <li>Open SmartLead or Instantly dashboard each evening. Check metrics for each active campaign.</li>
+            <li><strong>Kill immediately if:</strong> cost per reply too high, bounce rate above 5%, zero replies after 500 sends, or you've run out of leads for that segment.</li>
+            <li><strong>If out of leads (not killed):</strong> go back to your Qualified Leads sheet, pull the next 5,000 rows for that segment, and upload them to the campaign.</li>
+            <li>Paste the campaign stats into Claude and ask: "Analyze this campaign data. Which email performs best? Should I kill this or continue? What changes would you suggest to the copy?"</li>
+            <li>Log all decisions in a Google Sheet: Campaign Name | Start Date | Total Sent | Reply Rate | Decision | Reason. This becomes your learning database for future campaigns.</li>
+          </ul>
+          <div class="tools-label">Free Tools for This Step</div>
+          <div class="tools-row">
+            <span class="tool-badge free"><span class="dot"></span>SmartLead Dashboard</span>
+            <span class="tool-badge free"><span class="dot"></span>Claude.ai (Analysis)</span>
+            <span class="tool-badge free"><span class="dot"></span>Google Sheets (Log)</span>
+            <span class="tool-badge free"><span class="dot"></span>ChatGPT</span>
+          </div>
+          <div class="free-note">The log sheet you build here feeds directly into the "system learns" module — this is your long-term competitive edge.</div>
+        </div>
+      </div>
+
+    </div><!-- /steps-grid -->
+  </div><!-- /panel-manual -->
+
+  <!-- ─── PLAN B: AUTOMATED ─── -->
+  <div class="tab-panel" id="panel-auto">
+
+    <div class="flow-section reveal">
+      <h3>Automated System Architecture (No/Low Cost Stack)</h3>
+      <div class="flow-steps">
+        <div class="flow-node"><div class="fn-num">Apify</div><div class="fn-label">Scrape Leads</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node"><div class="fn-num">n8n</div><div class="fn-label">Trigger &amp; Route</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node"><div class="fn-num">Claude API</div><div class="fn-label">Filter + Write</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node"><div class="fn-num">Slack Bot</div><div class="fn-label">Human Review</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node"><div class="fn-num">SmartLead API</div><div class="fn-label">Auto-Launch</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node"><div class="fn-num">Cron + Claude</div><div class="fn-label">Nightly Audit</div></div>
+      </div>
+    </div>
+
+    <div class="auto-grid">
+
+      <!-- Step 1 Auto -->
+      <div class="auto-card reveal">
+        <div class="auto-card-icon">🕷️</div>
+        <h3>Step 1 — Automated Lead Scraping</h3>
+        <p>Apify's free tier runs scheduled actors to scrape LinkedIn, Apollo exports, and company directories automatically. Outputs feed directly into a Google Sheet or Airtable as the raw lead database.</p>
+        <div class="stack-row">
+          <span class="stack-pill">Apify (Free)</span>
+          <span class="stack-pill">Apollo CSV Export</span>
+          <span class="stack-pill">Google Sheets API</span>
+          <span class="stack-pill neutral">n8n Trigger</span>
+        </div>
+        <br>
+        <ul class="action-list">
+          <li>Set Apify actor on a weekly cron schedule — runs without your input.</li>
+          <li>n8n (self-hosted free) listens for new rows in the sheet and triggers Step 2 automatically.</li>
+          <li>Free Apify plan: $5/month free compute units — enough for ~10,000 scrapes/month.</li>
+        </ul>
+      </div>
+
+      <!-- Step 2 Auto -->
+      <div class="auto-card reveal">
+        <div class="auto-card-icon">🤖</div>
+        <h3>Step 2 — Automated AI Filtering</h3>
+        <p>n8n passes each lead row to the Claude API (or GPT-4o-mini via OpenAI free tier). A sub-agent checks ICP fit using your scoring prompt and writes the verdict + score back to the sheet. Rows below score 7 are auto-archived.</p>
+        <div class="stack-row">
+          <span class="stack-pill">Claude API</span>
+          <span class="stack-pill">GPT-4o-mini</span>
+          <span class="stack-pill">n8n (Self-Hosted)</span>
+          <span class="stack-pill neutral">Google Sheets</span>
+        </div>
+        <br>
+        <ul class="action-list">
+          <li>Claude Haiku API is the cheapest option: ~$0.25 per million tokens — filtering 2L leads costs &lt; $5 total.</li>
+          <li>n8n batches 100 rows per API call to reduce cost. Self-hosted n8n = $0/month on a free Oracle Cloud VM.</li>
+        </ul>
+      </div>
+
+      <!-- Step 3 Auto -->
+      <div class="auto-card reveal">
+        <div class="auto-card-icon">✍️</div>
+        <h3>Step 3 — AI Campaign Writer</h3>
+        <p>When enough qualified leads accumulate for a segment, n8n triggers Claude to write the full 3-email sequence with spintax, self-grade it, and rewrite if scores are low. Final copy is stored in a Notion database via the Notion API.</p>
+        <div class="stack-row">
+          <span class="stack-pill">Claude API</span>
+          <span class="stack-pill">Notion API (Free)</span>
+          <span class="stack-pill">n8n</span>
+          <span class="stack-pill neutral">Airtable</span>
+        </div>
+        <br>
+        <ul class="action-list">
+          <li>Self-grading loop: Claude rates its own copy. If &lt;7/10, it rewrites and re-scores automatically. Max 3 iterations.</li>
+          <li>Campaign copy, segment data, and lead count stored in Notion with a "Pending Review" status tag.</li>
+        </ul>
+      </div>
+
+      <!-- Step 4 Auto -->
+      <div class="auto-card reveal">
+        <div class="auto-card-icon">💬</div>
+        <h3>Step 4 — Slack Review Bot</h3>
+        <p>A Slack bot (built with n8n + Slack Webhook — both free) pings you with a formatted campaign card at 9 AM. Reply "approve" to launch, or "change: [note]" to trigger a rewrite. The system waits for your reply before proceeding.</p>
+        <div class="stack-row">
+          <span class="stack-pill">Slack (Free)</span>
+          <span class="stack-pill">n8n Webhook</span>
+          <span class="stack-pill">Slack API (Free)</span>
+          <span class="stack-pill neutral">Notion Update</span>
+        </div>
+        <br>
+        <ul class="action-list">
+          <li>Slack free plan supports all incoming webhooks and bot messages needed for this.</li>
+          <li>n8n watches for your Slack reply and routes to "launch" or "rewrite" branch accordingly.</li>
+        </ul>
+      </div>
+
+      <!-- Step 5 Auto — FEATURED -->
+      <div class="auto-card featured reveal">
+        <div class="auto-card-icon">🚀</div>
+        <h3>Step 5 — Auto-Launch via SmartLead API</h3>
+        <p>Once approved in Slack, n8n calls the SmartLead API to build the campaign, upload the first 5,000 verified leads, configure the schedule and follow-up sequence, and start sending — all with zero clicks inside SmartLead. This is fully zero-touch from approval to sending.</p>
+        <div class="stack-row">
+          <span class="stack-pill">SmartLead API</span>
+          <span class="stack-pill">n8n HTTP Request</span>
+          <span class="stack-pill">Millionverifier (Free Tier)</span>
+          <span class="stack-pill neutral">Google Sheets → CSV</span>
+        </div>
+        <br>
+        <ul class="action-list">
+          <li>SmartLead API endpoints: POST /campaign/create, POST /campaign/leads/upload, POST /campaign/start — all accessible on their basic plan.</li>
+          <li>Leads are pre-verified by Millionverifier (free tier: 100 verifications/day) before upload to keep bounce rate under 5%.</li>
+          <li>n8n splits your 40K leads into 5K batches. Each approved campaign gets its next 5K batch auto-uploaded.</li>
+          <li>n8n is self-hosted free on Oracle Cloud Free Tier (2 VMs free forever). Total infra cost: $0/month.</li>
+        </ul>
+      </div>
+
+      <!-- Step 6 Auto -->
+      <div class="auto-card reveal" style="grid-column: span 2;">
+        <div class="auto-card-icon">🌙</div>
+        <h3>Step 6 — Nightly Automated Audit (7:50 PM)</h3>
+        <p>A cron job in n8n runs every night at 7:50 PM. It calls the SmartLead API to pull stats for every active campaign, passes them to Claude for analysis, kills campaigns that hit kill criteria, and uploads the next 5K leads to winners — completely automatically.</p>
+        <div class="stack-row">
+          <span class="stack-pill">n8n Cron Job</span>
+          <span class="stack-pill">SmartLead API</span>
+          <span class="stack-pill">Claude API</span>
+          <span class="stack-pill neutral">Slack Notification</span>
+          <span class="stack-pill neutral">Google Sheets Log</span>
+        </div>
+        <br>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:8px;">
+          <div>
+            <p style="font-size:0.82rem; color:var(--grey-400); margin-bottom:8px;"><strong style="color:var(--white);">Kill Criteria (Auto-Stop):</strong></p>
+            <ul class="action-list">
+              <li>Cost per lead too high vs. benchmark</li>
+              <li>Bounce rate exceeds 5%</li>
+              <li>Zero replies after 500 sends</li>
+              <li>Lead list exhausted for segment</li>
+            </ul>
+          </div>
+          <div>
+            <p style="font-size:0.82rem; color:var(--grey-400); margin-bottom:8px;"><strong style="color:var(--white);">Winner Actions (Auto-Continue):</strong></p>
+            <ul class="action-list">
+              <li>Upload next 5K leads automatically</li>
+              <li>Slack notification with performance summary</li>
+              <li>Logs stats to Google Sheet for learning</li>
+              <li>Claude flags winning angles for next campaign</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /auto-grid -->
+
+    <!-- Free Stack Summary -->
+    <div style="margin-top:40px;" class="reveal">
+      <div class="flow-section">
+        <h3>Complete Free Tool Stack for Plan B</h3>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:14px; margin-top:4px;">
+          <div style="background:var(--grey-900); border:1px solid var(--grey-600); border-radius:10px; padding:16px;">
+            <div style="font-size:0.68rem; color:var(--orange); font-weight:700; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:8px;">Automation Core</div>
+            <div class="tools-row" style="flex-direction:column;">
+              <span class="tool-badge free" style="width:fit-content;"><span class="dot"></span>n8n (Self-Hosted Free)</span>
+              <span class="tool-badge free" style="width:fit-content;"><span class="dot"></span>Oracle Cloud Free VM</span>
+            </div>
+          </div>
+          <div style="background:var(--grey-900); border:1px solid var(--grey-600); border-radius:10px; padding:16px;">
+            <div style="font-size:0.68rem; color:var(--orange); font-weight:700; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:8px;">Lead Generation</div>
+            <div class="tools-row" style="flex-direction:column;">
+              <span class="tool-badge free" style="width:fit-content;"><span class="dot"></span>Apify (Free Tier)</span>
+              <span class="tool-badge free" style="width:fit-content;"><span class="dot"></span>Apollo.io (Free)</span>
+              <span class="tool-badge free" style="width:fit-content;"><span class="dot"></span>Phantombuster (Free)</span>
+            </div>
+          </div>
+          <div style="background:var(--grey-900); border:1px solid var(--grey-600); border-radius:10px; padding:16px;">
+            <div style="font-size:0.68rem; color:var(--orange); font-weight:700; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:8px;">AI Layer</div>
+            <div class="tools-row" style="flex-direction:column;">
+              <span class="tool-badge free" style="width:fit-content;"><span class="dot"></span>Claude API (Haiku ~$5)</span>
+              <span class="tool-badge free" style="width:fit-content;"><span class="dot"></span>GPT-4o-mini</span>
+              <span class="tool-badge free" style="width:fit-content;"><span class="dot"></span>Gemini 1.5 Flash (Free)</span>
+            </div>
+          </div>
+          <div style="background:var(--grey-900); border:1px solid var(--grey-600); border-radius:10px; padding:16px;">
+            <div style="font-size:0.68rem; color:var(--orange); font-weight:700; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:8px;">Outreach & Sending</div>
+            <div class="tools-row" style="flex-direction:column;">
+              <span class="tool-badge free" style="width:fit-content;"><span class="dot"></span>SmartLead (Trial/$30)</span>
+              <span class="tool-badge free" style="width:fit-content;"><span class="dot"></span>Instantly.ai (Trial)</span>
+            </div>
+          </div>
+          <div style="background:var(--grey-900); border:1px solid var(--grey-600); border-radius:10px; padding:16px;">
+            <div style="font-size:0.68rem; color:var(--orange); font-weight:700; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:8px;">Data Storage</div>
+            <div class="tools-row" style="flex-direction:column;">
+              <span class="tool-badge free" style="width:fit-content;"><span class="dot"></span>Google Sheets (Free)</span>
+              <span class="tool-badge free" style="width:fit-content;"><span class="dot"></span>Notion (Free)</span>
+              <span class="tool-badge free" style="width:fit-content;"><span class="dot"></span>Airtable (Free)</span>
+            </div>
+          </div>
+          <div style="background:var(--grey-900); border:1px solid var(--grey-600); border-radius:10px; padding:16px;">
+            <div style="font-size:0.68rem; color:var(--orange); font-weight:700; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:8px;">Notifications</div>
+            <div class="tools-row" style="flex-direction:column;">
+              <span class="tool-badge free" style="width:fit-content;"><span class="dot"></span>Slack (Free)</span>
+              <span class="tool-badge free" style="width:fit-content;"><span class="dot"></span>Slack Webhooks (Free)</span>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:20px; padding:14px 18px; background:rgba(34,197,94,0.07); border:1px solid rgba(34,197,94,0.2); border-radius:10px; font-size:0.82rem; color:#4ADE80; font-weight:600;">
+          💡 Total monthly cost for the full automated system: ~$30–35 (SmartLead basic plan only). Everything else is genuinely free or has a free tier sufficient for this workflow.
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /panel-auto -->
+
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════
+     COMPARISON TABLE
+═══════════════════════════════════════ -->
+<div class="section reveal">
+  <div class="section-header">
+    <div class="section-tag">Side by Side</div>
+    <h2 class="section-title">Manual vs <span>Automated</span></h2>
+    <p class="section-desc">Both paths reach the same destination. The difference is time invested and long-term scale capacity.</p>
+  </div>
+
+  <div style="overflow-x:auto;">
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Step</th>
+          <th>Plan A — Manual</th>
+          <th>Plan B — Automated</th>
+          <th>Time Saved</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>01 Lead List</td>
+          <td><span class="badge-manual">Manual</span> Export CSVs from Apollo, Hunter manually in batches</td>
+          <td><span class="badge-auto">Auto</span> Apify actor scrapes on schedule, feeds Google Sheet</td>
+          <td>~4 hrs/week</td>
+        </tr>
+        <tr>
+          <td>02 AI Filter</td>
+          <td><span class="badge-manual">Manual</span> Copy-paste batches into Claude, mark qualified leads by hand</td>
+          <td><span class="badge-auto">Auto</span> n8n sends rows to Claude API, scores &amp; archives automatically</td>
+          <td>~6 hrs/week</td>
+        </tr>
+        <tr>
+          <td>03 Campaign Write</td>
+          <td><span class="badge-manual">Manual</span> Prompt Claude manually, copy output to Google Doc</td>
+          <td><span class="badge-auto">Auto</span> n8n triggers Claude to write, self-grade, rewrite, store in Notion</td>
+          <td>~2 hrs/campaign</td>
+        </tr>
+        <tr>
+          <td>04 Human Review</td>
+          <td><span class="badge-manual">Manual</span> Review in Google Drive, leave comment</td>
+          <td><span class="badge-auto">Semi-Auto</span> Slack bot pings you. Reply approve/change in 30 seconds</td>
+          <td>90% faster</td>
+        </tr>
+        <tr>
+          <td>05 Launch</td>
+          <td><span class="badge-manual">Manual</span> Upload CSV, configure campaign, set schedule in SmartLead UI</td>
+          <td><span class="badge-auto">Auto</span> n8n calls SmartLead API — campaign live in seconds</td>
+          <td>~30 min/campaign</td>
+        </tr>
+        <tr>
+          <td>06 Nightly Audit</td>
+          <td><span class="badge-manual">Manual</span> Check dashboard, paste stats to Claude, make decisions</td>
+          <td><span class="badge-auto">Auto</span> Cron runs 7:50 PM, kills bad campaigns, feeds winners automatically</td>
+          <td>~1 hr/day</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════
+     SYSTEM LEARNS
+═══════════════════════════════════════ -->
+<div class="section reveal">
+  <div class="section-header">
+    <div class="section-tag">Compound Advantage</div>
+    <h2 class="section-title">The System <span>Learns</span> Over Time</h2>
+    <p class="section-desc">The real moat isn't the tools — it's the data your campaigns generate. Each campaign makes the next one smarter.</p>
+  </div>
+
+  <div class="learn-grid">
+    <div class="learn-card reveal">
+      <div class="learn-icon">📈</div>
+      <h4>Angles That Get Replies</h4>
+      <p>Every campaign reply is logged with the email angle used. Over time, Claude can identify which value propositions, pain points, and hooks resonate with which segments. You start every new campaign with unfair insight.</p>
+    </div>
+    <div class="learn-card reveal">
+      <div class="learn-icon">🎯</div>
+      <h4>Subject Lines That Convert</h4>
+      <p>Open rate data from SmartLead feeds back into a "winning subject lines" library stored in your Google Sheet or Notion. Claude's next campaign prompt is seeded with top performers from your actual data.</p>
+    </div>
+    <div class="learn-card reveal">
+      <div class="learn-icon">💰</div>
+      <h4>Lowest Cost Segments</h4>
+      <p>The nightly audit logs cost-per-reply by segment. After 60 days, you know exactly which industries, geographies, and company sizes produce the cheapest, fastest results. You shift lead volume to winners.</p>
+    </div>
+    <div class="learn-card reveal">
+      <div class="learn-icon">🔄</div>
+      <h4>ICP Gets Sharper</h4>
+      <p>As Claude flags which filtered leads became replies vs. non-replies, your ICP scoring prompt improves. The system progressively qualifies leads more accurately, meaning fewer wasted sends each cycle.</p>
+    </div>
+    <div class="learn-card reveal">
+      <div class="learn-icon">🚫</div>
+      <h4>Deliverability Patterns</h4>
+      <p>Bounce rates, spam flags, and inbox placement data are tracked per domain and per email template. Patterns that damage deliverability get flagged early before they damage your sender score permanently.</p>
+    </div>
+    <div class="learn-card reveal">
+      <div class="learn-icon">⚡</div>
+      <h4>Faster Campaign Spin-Up</h4>
+      <p>By month 3, your campaign prompt library, your winning subject lines database, and your ICP filter mean a new campaign goes from zero to launch-ready in under 4 minutes. The compound advantage accelerates.</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════════════════════
+     RESULTS BANNER
+═══════════════════════════════════════ -->
+<div class="section reveal">
+  <div class="results-banner">
+    <h2>From Half a Day to <span>4 Minutes</span></h2>
+    <p>Six campaigns, each with three emails and spintax variations, fully qualified, copy-graded, and ready to launch — every single time. What used to take a full day of campaign operations now runs before your morning coffee.</p>
+    <div class="results-stats">
+      <div class="r-stat">
+        <span class="r-num">100+</span>
+        <div class="r-label">International Sales Calls/Month</div>
+      </div>
+      <div class="r-stat">
+        <span class="r-num">0</span>
+        <div class="r-label">Content Pieces Published</div>
+      </div>
+      <div class="r-stat">
+        <span class="r-num">6</span>
+        <div class="r-label">Campaigns in 4 Minutes</div>
+      </div>
+      <div class="r-stat">
+        <span class="r-num">~$30</span>
+        <div class="r-label">Monthly Cost (Automated)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>Built for <span>International Client Acquisition</span> · 6-Step AI Outreach Blueprint · Start with Plan A today, migrate to Plan B as you scale</p>
+</footer>
+
+<script>
+  // Progress bar
+  window.addEventListener('scroll', () => {
+    const scrollTop = document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const progress = (scrollTop / scrollHeight) * 100;
+    document.getElementById('progressBar').style.width = progress + '%';
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Tabs
+  function switchTab(plan) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('panel-' + plan).classList.add('active');
+    event.target.classList.add('active');
+    // Re-trigger reveal for newly visible panels
+    document.querySelectorAll('#panel-' + plan + ' .reveal').forEach(el => {
+      observer.observe(el);
+    });
+  }
+</script>
+
+</body>
+</html>
